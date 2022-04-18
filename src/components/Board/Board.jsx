@@ -5,6 +5,7 @@ import Food from '../Food/Food'
 import getRandom from '../../functions/getRandom'
 import GameOver from '../GameOver/GameOver'
 import AskName from '../AskName/AskName'
+import { api } from '../../functions/api'
 
 const Board = () => {
     const [snakePos, setSnakePos] = useState([[44, 44]]);
@@ -47,6 +48,7 @@ const Board = () => {
                 if ((snakePos.length - 1) * 10 > score) {
                     setScore((snakePos.length) * 10);
                     localStorage.setItem("highscore", (snakePos.length) * 10);
+                    uploadScore((snakePos.length) * 10);
                 }
                 setGameOver(true);
                 setSpeed(120);
@@ -102,7 +104,15 @@ const Board = () => {
         return () => {
             document.removeEventListener('keydown', handleKeyPress);
         }
-    },[dir]);
+    }, [dir]);
+    
+    //Function to upload the score in database
+    async function uploadScore(num) {
+        await api.database.createDocument('snake-highscores', 'unique()', {
+            player: player,
+            score: num,
+        })
+    }
         
 
     return (

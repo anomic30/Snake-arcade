@@ -1,8 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { api } from '../../functions/api'
 import './ScoreBoard.css';
 
 const ScoreBoard = () => {
     const [scores, setScores] = useState([]);
+
+    useEffect(() => {
+        const unsubscribe = api.subscribe([process.env.REACT_APP_APPWRITE_COLLECTIONS], (data) => {
+            if (data.event === 'database.documents.create') {
+                //insert data.payload in to scores in its correct place based on score
+                const newScores = [...scores];
+                const newScore = data.payload;
+                newScores.push(newScore);
+                newScores.sort((a, b) => b.score - a.score);
+                setScores(newScores);
+
+            }
+        })
+        return () => {
+            unsubscribe();
+        }
+    }, [])
+    
+    useEffect(() => {
+        async function fetchScores() {
+            const scores = await api.database.listDocuments(process.env.REACT_APP_APPWRITE_COLLECTION_ID, [], 10, 0, '','', ['score'], ['DESC']);
+
+            console.log(scores.documents);
+            setScores(scores.documents);
+        }
+        fetchScores();
+    },[])
 
     return (
         <div className="scoreBoard">
