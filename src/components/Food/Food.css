@@ -2,8 +2,6 @@
     position: absolute;
     width: 4%;
     height: 4%;
-    /* background-color: crimson;
-    border: 1px solid white; */
     border-radius: 5px;
     z-index: 1;
     animation: increaseFood 2s infinite;

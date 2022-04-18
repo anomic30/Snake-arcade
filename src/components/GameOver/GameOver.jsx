@@ -1,5 +1,5 @@
 import React from 'react';
-import './Gameover.css';
+import './GameOver.css';
 
 const GameOver = ({gameOver, setGameOver}) => {
     return (

@@ -1,11 +1,11 @@
 .head{
     box-sizing: border-box;
     border-radius: 25%;
-    /* transform: scale(1.5); */
     position: absolute;
     width: 4%;
     height: 4%;
     background-color: #15f800;
     border: 1px solid #027002;
     z-index: 2;
+    transition: 0.1s;
 }

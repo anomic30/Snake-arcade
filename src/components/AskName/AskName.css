@@ -1,0 +1,48 @@
+.askName{
+    box-sizing: border-box;
+    height: 500px;
+    width: 500px;
+    outline: 4px solid #feeb2c;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Press Start 2P', cursive;
+    box-sizing: border-box;
+    gap: 40px;
+    margin-top: 35px;
+}
+
+.askName h1{
+    font-size: 30px;
+    color: #ff074e;
+}
+
+.askName input{
+    width: 60%;
+    height: 40px;
+    border: none;
+    background-color: black;
+    outline: 2px solid #feeb2c;
+    color: #feeb2c;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 22px;
+    padding-left: 10px;
+}
+
+.save-btn{
+    width: 100px;
+    height: 40px;
+    background-color: #feeb2c;
+    outline: 2px solid #feeb2c;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.askName .subcon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
