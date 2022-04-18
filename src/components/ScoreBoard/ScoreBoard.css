@@ -1,0 +1,102 @@
+.scoreBoard{
+    max-width: 450px;
+    height: 500px;
+    background-color: rgb(7, 7, 7);
+    margin: 40px 20px;
+    outline: 4px solid #feeb2c;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.high-scores{
+    padding: 10px;
+}
+
+.high-scores p{
+    font-size: 22px;
+    color: #ff074e;
+    font-family: 'Press Start 2P', cursive;
+}
+
+table{
+    width: 450px;
+    border-collapse: separate;
+    border-spacing: 0 1em;
+}
+
+thead{
+    color: #feeb2c;
+}
+
+.tdhead{
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+}
+
+thead{
+    height: 40px;
+    padding-bottom: 20px;
+}
+
+.tdbody{
+    color: #0058f8;
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+}
+
+/*--------------- Trying to make it responsible for smaller screen :) ------------------*/
+@media only screen and (max-height: 790px) {
+    .scoreBoard{
+        height: 400px;
+        width: 400px;
+        padding: 5px;
+    }
+    table{
+        width: 400px;
+    }
+    .tdbody{
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-height: 600px){
+    .scoreBoard{
+        height: 350px;
+        max-width: 350px;
+    }
+    table{
+        width: 350px;
+        border-spacing: 0 12px;
+    }
+    .tdhead{
+        font-size: 14px;
+    }
+    .tdbody{
+        font-size: 12px;
+    }
+    .high-scores{
+        padding: 5px;
+    }
+}
+
+@media only screen and (max-width: 450px){
+    .scoreBoard{
+        height: 400px;
+        width: 300px;
+        /* padding: 5px; */
+    }
+    table{
+        width: 300px;
+    }
+    .tdhead{
+        font-size: 14px;
+    }
+    .tdbody{
+        font-size: 12px;
+    }
+    .high-scores{
+        padding: 5px;
+    }
+}
