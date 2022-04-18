@@ -17,8 +17,9 @@
     height: auto;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     align-items: flex-start;
+    gap: 10%;
 }
 
 .foot{

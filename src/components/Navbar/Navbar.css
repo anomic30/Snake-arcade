@@ -1,0 +1,61 @@
+.navbar{
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #00e339;
+    font-family: 'Bungee Shade', cursive;
+}
+
+.navbar p{
+    font-size: 60px;
+}
+
+.logo{
+    top: 4%;
+    right: 5%;
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    color: #00e339;
+    background-color: #000000;
+    border-radius: 50%;
+}
+
+/*--------------- Trying to make it responsible for smaller screen :) ------------------*/
+
+@media only screen and (max-height: 790px) {
+    .navbar{
+        height: 80px;
+    }
+    .navbar p{
+        font-size: 40px;
+    }
+}
+
+@media only screen and (max-height: 600px){
+    .navbar{
+        height: 70px;
+    }
+}
+
+@media only screen and (max-width: 450px){
+    .navbar{
+        height: 60px;
+    }
+    .navbar p{
+        font-size: 32px;
+    }
+    .logo{
+        top: 2%;
+        height: 30px;
+        width: 30px;
+    }
+}
+
+@media only screen and (max-width: 365px){
+    .navbar p{
+        font-size: 28px;
+    }
+}
