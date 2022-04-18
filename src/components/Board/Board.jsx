@@ -49,7 +49,7 @@ const Board = () => {
                     localStorage.setItem("highscore", (snakePos.length) * 10);
                 }
                 setGameOver(true);
-                setSpeed(100);
+                setSpeed(120);
                 setDir('');
                 setSnakePos([[44, 44]]);
                 setFoodPos(getRandom());
@@ -108,13 +108,13 @@ const Board = () => {
     return (
         <div className='board'>
            {!localStorage.getItem('player') ? <>
-                <AskName setPlayer={setPlayer} setScore={setScore} />
+                <AskName setPlayer={setPlayer} setScore={setScore} setGameOver={setGameOver}/>
             </> : <>
                 <div className="name-input">
                     <p>Player name:</p>
                     <input type="text" onChange={(e) => { setPlayer(e.target.value); localStorage.setItem('player', e.target.value) }} value={player !== '' ? player : ""} />
                 </div>
-                {gameOver ? <GameOver gameOver={gameOver} setGameOver={setGameOver} /> :
+                {gameOver ? <GameOver setGameOver={setGameOver} /> :
                     <div className="snake-board">
                         <Snake snakePos={snakePos} />
                         <Food foodPos={foodPos} />

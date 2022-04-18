@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import './AskName.css'
 
-const AskName = ({setPlayer, setScore}) => {
+const AskName = ({setPlayer, setScore, setGameOver}) => {
   const [playerName, setPlayerName] = useState("");
   function savePlayer() {
     setScore(0);
+    setGameOver(false);
     localStorage.removeItem('highscore');
     localStorage.setItem('player', playerName);
     setPlayer(playerName);

@@ -53,7 +53,8 @@
     font-family: 'Press Start 2P', cursive;
     font-size: 22px;
     color: #feeb2c;
-    width: 250px;
+    max-width: 200px;
+    width: auto;
     height: 30px;
     border: none;
     background-color: #292828;
