@@ -6,6 +6,7 @@ import getRandom from '../../functions/getRandom'
 import GameOver from '../GameOver/GameOver'
 import AskName from '../AskName/AskName'
 import { api } from '../../functions/api'
+import collect_soundfx from '../../assets/collect.mp3'
 
 const Board = () => {
     const [snakePos, setSnakePos] = useState([[44, 44]]);
@@ -15,6 +16,20 @@ const Board = () => {
     const [score, setScore] = useState(localStorage.getItem('highscore') || 0);
     const [gameOver, setGameOver] = useState(false);
     const [player, setPlayer] = useState(localStorage.getItem('player') || '');
+
+    const [audio] = useState(new Audio(collect_soundfx));
+    const [audioPlaying, setAudioPlaying] = useState(false);
+
+    useEffect(() => {
+        audioPlaying? audio.play() : audio.pause();
+    }, [audio, audioPlaying]);
+    
+    useEffect(() => {
+        audio.addEventListener('ended', () => setAudioPlaying(false));
+        return () => {
+            audio.removeEventListener('ended', () => setAudioPlaying(false));
+        }
+    })
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -38,6 +53,7 @@ const Board = () => {
             }
             newSnakePos.unshift(head);
             if (newSnakePos[0][0] === foodPos[0] && newSnakePos[0][1] === foodPos[1]) {
+                setAudioPlaying(!audioPlaying);
                 setFoodPos(getRandom());
                 increaseSpeed();
             } else {

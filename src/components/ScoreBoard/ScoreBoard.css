@@ -1,7 +1,7 @@
 .scoreBoard{
     max-width: 450px;
     height: 500px;
-    background-color: rgb(7, 7, 7);
+    background-color: rgba(7, 7, 7, 0.671);
     margin: 40px 20px;
     outline: 4px solid #feeb2c;
     border-radius: 10px;
