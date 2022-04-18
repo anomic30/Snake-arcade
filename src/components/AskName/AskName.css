@@ -39,6 +39,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: url("../../assets/hand_cur.png"), auto;
 }
 
 .askName .subcon{

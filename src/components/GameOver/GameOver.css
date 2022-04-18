@@ -28,6 +28,7 @@
     background: none;
     font-size: 22px;
     transition: 0.3s;
+    cursor: url("../../assets/hand_cur.png"), auto;
 }
 
 .gameover button:hover{

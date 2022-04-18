@@ -20,6 +20,7 @@
     width: 40px;
     color: #00e339;
     background-color: #000000;
+    cursor: url("../../assets/hand_cur.png"), auto;
 }
 
 .logo-con{

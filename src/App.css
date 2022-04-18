@@ -6,14 +6,11 @@
     flex-direction: column;
     align-items: center;
     background-image: url("./assets/bg1.svg");
-    /* background-size: repeat; */
-    /* background-attachment: fixed; */
-    /* cursor: url("./nor-cur.png"), auto; */
+    cursor: url("./assets/point_cur.png"), auto;
 }
 
 .main{
     width: 100%;
-    /* min-height: calc(100vh - 170px); */
     height: auto;
     display: flex;
     flex-wrap: wrap;
