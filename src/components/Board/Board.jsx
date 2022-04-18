@@ -111,7 +111,7 @@ const Board = () => {
         await api.database.createDocument('snake-highscores', 'unique()', {
             player: player,
             score: num,
-        })
+        },[], ['role:member'])
     }
         
 
