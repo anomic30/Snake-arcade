@@ -1,0 +1,68 @@
+.App{
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url("./assets/bg1.svg");
+    /* background-size: repeat; */
+    /* background-attachment: fixed; */
+    /* cursor: url("./nor-cur.png"), auto; */
+}
+
+.main{
+    width: 100%;
+    /* min-height: calc(100vh - 170px); */
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.foot{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #00e339;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.foot img{
+    width: 50px;
+}
+
+@media only screen and (max-height: 790px){
+    .help{
+        font-size: 12px;
+    }
+    .foot{
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-height: 600px){
+    .navbar{
+        height: 70px;
+    }
+    .help{
+        font-size: 10px;
+    }
+    .foot{
+        margin-top: -6px;
+        font-size: 12px;
+    }
+    .foot img{
+        width: 30px;
+    }
+}
+
+@media only screen and (max-width: 450px){
+    .foot{
+        font-size: 12px;
+    }
+    .foot img{
+        width: 40px;
+    }
+}

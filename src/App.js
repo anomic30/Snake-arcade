@@ -1,9 +1,20 @@
 import './App.css';
+import Board from './components/Board/Board';
+import ScoreBoard from './components/ScoreBoard/ScoreBoard';
+import love from './assets/love.png';
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello World!</h1>
+      <div className="main">
+        <Board/>
+        <ScoreBoard/>
+      </div>
+      <div className="foot">
+        <p>Made with</p>
+        <img src={love} alt="love" />
+        <p>by Anom</p>
+      </div>
     </div>
   );
 }
