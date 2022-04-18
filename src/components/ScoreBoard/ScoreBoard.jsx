@@ -8,7 +8,7 @@ const ScoreBoard = () => {
     useEffect(() => {
         const unsubscribe = api.subscribe([process.env.REACT_APP_APPWRITE_COLLECTIONS], (data) => {
             if (data.event === 'database.documents.create') {
-                //insert data.payload in to scores in its correct place based on score
+                
                 const newScores = [...scores];
                 const newScore = data.payload;
                 newScores.push(newScore);
@@ -20,13 +20,13 @@ const ScoreBoard = () => {
         return () => {
             unsubscribe();
         }
-    }, [])
+    }, [scores])
     
     useEffect(() => {
         async function fetchScores() {
             const scores = await api.database.listDocuments(process.env.REACT_APP_APPWRITE_COLLECTION_ID, [], 10, 0, '','', ['score'], ['DESC']);
 
-            console.log(scores.documents);
+            // console.log(scores.documents);
             setScores(scores.documents);
         }
         fetchScores();
