@@ -9,6 +9,7 @@ import { api } from '../../functions/api'
 import collect_soundfx from '../../assets/collect.mp3'
 import background_music from '../../assets/background-music.mp3'
 import gameover_music from '../../assets/game_over.mp3'
+import gameplay_music from '../../assets/gameplay.mp3'
 import Help from '../Help/Help'
 
 const Board = () => {
@@ -29,6 +30,9 @@ const Board = () => {
     const [gameOverMusic] = useState(new Audio(gameover_music));
     const [gameOverMusicPlaying, setGameOverMusicPlaying] = useState(false);
 
+    const [gameplayMusic] = useState(new Audio(gameplay_music));
+    const [gameplayMusicPlaying, setGameplayMusicPlaying] = useState(true);
+
     const [needHelp, setNeedHelp] = useState(false);
 
     useEffect(() => {
@@ -37,25 +41,32 @@ const Board = () => {
 
     useEffect(() => {
         musicPlaying && !dir ? music.play() : music.pause();
+        gameplayMusicPlaying && dir? gameplayMusic.play() : gameplayMusic.pause();
     });
+
+    useEffect(() => {
+        music.volume = 1;
+        collectAudio.volume = 0.6;
+        gameplayMusic.volume = 0.4;
+    },[]);
 
     useEffect(() => {
         gameOverMusicPlaying ? gameOverMusic.play() : gameOverMusic.pause();
     }, [gameOverMusic, gameOverMusicPlaying]);
 
     //To run music in loop
-    useEffect(() => {
-        music.addEventListener('ended', () => {
-            music.currentTime = 0;
-            music.play();
-        })
-        return () => {
-            music.removeEventListener('ended', () => {
-                music.currentTime = 0;
-                music.play();
-            })
-        } //Cleanup
-    });
+    // useEffect(() => {
+    //     music.addEventListener('ended', () => {
+    //         music.currentTime = 0;
+    //         music.play();
+    //     })
+    //     return () => {
+    //         music.removeEventListener('ended', () => {
+    //             music.currentTime = 0;
+    //             music.play();
+    //         })
+    //     } //Cleanup
+    // });
 
     useEffect(() => {
         collectAudio.addEventListener('ended', () => setCollectAudioPlaying(false));
@@ -66,6 +77,7 @@ const Board = () => {
 
     useEffect(() => {
         const interval = setInterval(async () => {
+            setGameplayMusicPlaying(true);
             const head = [snakePos[0][0], snakePos[0][1]];
             const newSnakePos = [...snakePos];
             switch (dir) {
@@ -101,7 +113,9 @@ const Board = () => {
                 }
                 // setSpeed(0);
                 music.currentTime = 0;
+                gameplayMusic.currentTime = 0;
                 setMusicPlaying(false);
+                setGameplayMusicPlaying(false);
                 setDir('');
                 //wait for 2 seconds before game over
                 setGameOverMusicPlaying(true);
