@@ -9,6 +9,7 @@ import { api } from '../../functions/api'
 import collect_soundfx from '../../assets/collect.mp3'
 import background_music from '../../assets/background-music.mp3'
 import gameover_music from '../../assets/game_over.mp3'
+import Help from '../Help/Help'
 
 const Board = () => {
     const [snakePos, setSnakePos] = useState([[44, 44]]);
@@ -27,6 +28,8 @@ const Board = () => {
 
     const [gameOverMusic] = useState(new Audio(gameover_music));
     const [gameOverMusicPlaying, setGameOverMusicPlaying] = useState(false);
+
+    const [needHelp, setNeedHelp] = useState(false);
 
     useEffect(() => {
         collectAudioPlaying ? collectAudio.play() : collectAudio.pause();
@@ -170,6 +173,9 @@ const Board = () => {
     return (
         <div className='board'>
             <div className={`sound-icon ${musicPlaying ? 'on' : 'off'} `} onClick={() => setMusicPlaying(!musicPlaying)}></div>
+            <div className={`help-icon ${needHelp? 'need':'not-needed'}`} onClick={() => { setNeedHelp(!needHelp) }}></div>
+            { needHelp && <Help/>}
+
             {!localStorage.getItem('player') ? <>
                 <AskName setPlayer={setPlayer} setScore={setScore} setGameOver={setGameOver} />
             </> : <>
