@@ -7,6 +7,7 @@ import GameOver from '../GameOver/GameOver'
 import AskName from '../AskName/AskName'
 import { api } from '../../functions/api'
 import collect_soundfx from '../../assets/collect.mp3'
+import background_music from '../../assets/background-music.mp3'
 
 const Board = () => {
     const [snakePos, setSnakePos] = useState([[44, 44]]);
@@ -17,19 +18,40 @@ const Board = () => {
     const [gameOver, setGameOver] = useState(false);
     const [player, setPlayer] = useState(localStorage.getItem('player') || '');
 
-    const [audio] = useState(new Audio(collect_soundfx));
-    const [audioPlaying, setAudioPlaying] = useState(false);
+    const [collectAudio] = useState(new Audio(collect_soundfx));
+    const [collectAudioPlaying, setCollectAudioPlaying] = useState(false);
+
+    const [music] = useState(new Audio(background_music));
+    const [musicPlaying, setMusicPlaying] = useState(true);
 
     useEffect(() => {
-        audioPlaying? audio.play() : audio.pause();
-    }, [audio, audioPlaying]);
-    
+        collectAudioPlaying ? collectAudio.play() : collectAudio.pause();
+    }, [collectAudio, collectAudioPlaying]);
+
     useEffect(() => {
-        audio.addEventListener('ended', () => setAudioPlaying(false));
+        musicPlaying && !dir ? music.play() : music.pause();
+    });
+
+    //To run music in loop
+    useEffect(() => {
+        music.addEventListener('ended', () => {
+            music.currentTime = 0;
+            music.play();
+        })
         return () => {
-            audio.removeEventListener('ended', () => setAudioPlaying(false));
+            music.removeEventListener('ended', () => {
+                music.currentTime = 0;
+                music.play();
+            })
+        } //Cleanup
+    });
+
+    useEffect(() => {
+        collectAudio.addEventListener('ended', () => setCollectAudioPlaying(false));
+        return () => {
+            collectAudio.removeEventListener('ended', () => setCollectAudioPlaying(false));
         }
-    })
+    });
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -53,7 +75,7 @@ const Board = () => {
             }
             newSnakePos.unshift(head);
             if (newSnakePos[0][0] === foodPos[0] && newSnakePos[0][1] === foodPos[1]) {
-                setAudioPlaying(!audioPlaying);
+                setCollectAudioPlaying(!collectAudioPlaying);
                 setFoodPos(getRandom());
                 increaseSpeed();
             } else {
@@ -121,7 +143,7 @@ const Board = () => {
             document.removeEventListener('keydown', handleKeyPress);
         }
     }, [dir]);
-    
+
     //Function to upload the score in database
     async function uploadScore(num) {
         await api.database.createDocument('snake-highscores', 'unique()', {
@@ -129,11 +151,12 @@ const Board = () => {
             score: num,
         })
     }
-        
+
     return (
         <div className='board'>
-           {!localStorage.getItem('player') ? <>
-                <AskName setPlayer={setPlayer} setScore={setScore} setGameOver={setGameOver}/>
+            <div className={`sound-icon ${musicPlaying? 'on':'off'} `} onClick={()=>setMusicPlaying(!musicPlaying)}></div>
+            {!localStorage.getItem('player') ? <>
+                <AskName setPlayer={setPlayer} setScore={setScore} setGameOver={setGameOver} />
             </> : <>
                 <div className="name-input">
                     <p>Player name:</p>

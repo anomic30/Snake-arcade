@@ -13,6 +13,7 @@ const ScoreBoard = () => {
                 const newScore = data.payload;
                 newScores.push(newScore);
                 newScores.sort((a, b) => b.score - a.score);
+                newScores.splice(10, newScores.length - 10);
                 setScores(newScores);
 
             }

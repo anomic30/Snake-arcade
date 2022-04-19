@@ -4,7 +4,25 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
+    position: relative;
 }
+.sound-icon{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: -65px;
+    top: 50px;
+    background-size: cover;
+    cursor: url("../../assets/hand_cur.png"), auto;
+}
+
+.on{
+    background-image: url("../../assets/music-on.png");
+}
+.off{
+    background-image: url("../../assets/music-off.png");
+}
+
 .snake-board{
     box-sizing: border-box;
     position: relative;

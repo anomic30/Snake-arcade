@@ -11,7 +11,7 @@
 }
 
 .high-scores{
-    padding: 10px;
+    padding: 20px 10px;
 }
 
 .high-scores p{
@@ -27,7 +27,7 @@ table{
 }
 
 thead{
-    color: #feeb2c;
+    color: rgb(254, 235, 44);
 }
 
 .tdhead{
@@ -58,6 +58,9 @@ thead{
     }
     .tdbody{
         font-size: 12px;
+    }
+    .high-scores{
+        padding: 10px 10px;
     }
 }
 

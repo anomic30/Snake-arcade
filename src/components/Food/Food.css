@@ -24,8 +24,9 @@
     }
 }
 
-@media only screen and (max-width: 450px){
+/* @media only screen and (max-width: 450px){
     .food img{
-        width: 14px;
+        width: 100%;
+        height: 100%;
     }
-}
+} */
