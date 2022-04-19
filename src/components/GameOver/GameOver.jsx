@@ -1,7 +1,8 @@
 import React from 'react';
 import './GameOver.css';
 
-const GameOver = ({setGameOver}) => {
+const GameOver = ({ setGameOver, setMusicPlaying }) => {
+    // setMusicPlaying(true);
     return (
         <div className="gameover">
             <div className="over">

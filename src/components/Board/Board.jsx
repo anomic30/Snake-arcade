@@ -8,6 +8,7 @@ import AskName from '../AskName/AskName'
 import { api } from '../../functions/api'
 import collect_soundfx from '../../assets/collect.mp3'
 import background_music from '../../assets/background-music.mp3'
+import gameover_music from '../../assets/game_over.mp3'
 
 const Board = () => {
     const [snakePos, setSnakePos] = useState([[44, 44]]);
@@ -24,6 +25,9 @@ const Board = () => {
     const [music] = useState(new Audio(background_music));
     const [musicPlaying, setMusicPlaying] = useState(true);
 
+    const [gameOverMusic] = useState(new Audio(gameover_music));
+    const [gameOverMusicPlaying, setGameOverMusicPlaying] = useState(false);
+
     useEffect(() => {
         collectAudioPlaying ? collectAudio.play() : collectAudio.pause();
     }, [collectAudio, collectAudioPlaying]);
@@ -31,6 +35,10 @@ const Board = () => {
     useEffect(() => {
         musicPlaying && !dir ? music.play() : music.pause();
     });
+
+    useEffect(() => {
+        gameOverMusicPlaying ? gameOverMusic.play() : gameOverMusic.pause();
+    }, [gameOverMusic, gameOverMusicPlaying]);
 
     //To run music in loop
     useEffect(() => {
@@ -54,7 +62,7 @@ const Board = () => {
     });
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const interval = setInterval(async () => {
             const head = [snakePos[0][0], snakePos[0][1]];
             const newSnakePos = [...snakePos];
             switch (dir) {
@@ -88,12 +96,19 @@ const Board = () => {
                     localStorage.setItem("highscore", (snakePos.length) * 10);
                     uploadScore((snakePos.length) * 10);
                 }
+                // setSpeed(0);
+                music.currentTime = 0;
+                setMusicPlaying(false);
+                setDir('');
+                //wait for 2 seconds before game over
+                setGameOverMusicPlaying(true);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                setGameOverMusicPlaying(false);
+                setMusicPlaying(true);
                 setGameOver(true);
                 setSpeed(120);
-                setDir('');
                 setSnakePos([[44, 44]]);
                 setFoodPos(getRandom());
-                clearInterval(interval);
             };
         }, speed);
         return () => clearInterval(interval);
@@ -154,7 +169,7 @@ const Board = () => {
 
     return (
         <div className='board'>
-            <div className={`sound-icon ${musicPlaying? 'on':'off'} `} onClick={()=>setMusicPlaying(!musicPlaying)}></div>
+            <div className={`sound-icon ${musicPlaying ? 'on' : 'off'} `} onClick={() => setMusicPlaying(!musicPlaying)}></div>
             {!localStorage.getItem('player') ? <>
                 <AskName setPlayer={setPlayer} setScore={setScore} setGameOver={setGameOver} />
             </> : <>
@@ -162,7 +177,7 @@ const Board = () => {
                     <p>Player name:</p>
                     <input type="text" onChange={(e) => { setPlayer(e.target.value); localStorage.setItem('player', e.target.value) }} value={player !== '' ? player : ""} />
                 </div>
-                {gameOver ? <GameOver setGameOver={setGameOver} /> :
+                    {gameOver ? <GameOver setGameOver={setGameOver} setMusicPlaying={setMusicPlaying} /> :
                     <div className="snake-board">
                         <Snake snakePos={snakePos} />
                         <Food foodPos={foodPos} />
