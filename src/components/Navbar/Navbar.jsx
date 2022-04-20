@@ -6,7 +6,7 @@ import { FaDev } from 'react-icons/fa';
 const Navbar = () => {
     return (
         <div className="navbar">
-            <p>Snake Online</p>
+            <p>Snake Arcade</p>
             <div className='logo-con'>
                 <FaDev className="logo" onClick={()=>window.open("https://dev.to/anomic30")}/>
                 <RiGithubLine className="logo" onClick={()=>window.open("https://github.com/anomic30")}/>

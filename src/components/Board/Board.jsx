@@ -106,7 +106,7 @@ const Board = () => {
             if (newSnakePos[0][0] === goldenFoodPos[0] && newSnakePos[0][1] === goldenFoodPos[1]) {
                 setCollectAudioPlaying(true);
                 const r = Math.floor(Math.random() * 100);
-                if (r < 50) {
+                if (r < 20) {
                     setGoldenPoints(goldenPoints - 50);
                 } else {
                     setGoldenPoints(goldenPoints + 50);
