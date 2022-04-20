@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Board.css'
 import Snake from '../Snake/Snake'
 import Food from '../Food/Food'
+import GoldenFood from '../GoldenFood/GoldenFood'
 import getRandom from '../../functions/getRandom'
 import GameOver from '../GameOver/GameOver'
 import AskName from '../AskName/AskName'
@@ -20,6 +21,8 @@ const gameplayMusic = new Audio(gameplay_music);
 const Board = () => {
     const [snakePos, setSnakePos] = useState([[44, 44]]);
     const [foodPos, setFoodPos] = useState(getRandom());
+    const [goldenFoodPos, setGoldenFoodPos] = useState(getRandom());
+    const [goldenPoints, setGoldenPoints] = useState(0);
     const [dir, setDir] = useState('');
     const [speed, setSpeed] = useState(120); //Initial speed
     const [score, setScore] = useState(localStorage.getItem('highscore') || 0);
@@ -27,6 +30,7 @@ const Board = () => {
     const [player, setPlayer] = useState(localStorage.getItem('player') || '');
     const [needHelp, setNeedHelp] = useState(false);
 
+    //Audio states
     const [collectAudioPlaying, setCollectAudioPlaying] = useState(false);
     const [musicPlaying, setMusicPlaying] = useState(true);
     const [gameOverMusicPlaying, setGameOverMusicPlaying] = useState(false);
@@ -52,26 +56,28 @@ const Board = () => {
         gameOverMusicPlaying ? gameOverMusic.play() : gameOverMusic.pause();
     }, [gameOverMusicPlaying]);
 
-    //To run music in loop
-    // useEffect(() => {
-    //     music.addEventListener('ended', () => {
-    //         music.currentTime = 0;
-    //         music.play();
-    //     })
-    //     return () => {
-    //         music.removeEventListener('ended', () => {
-    //             music.currentTime = 0;
-    //             music.play();
-    //         })
-    //     } //Cleanup
-    // });
-
     useEffect(() => {
         collectAudio.addEventListener('ended', () => setCollectAudioPlaying(false));
         return () => {
             collectAudio.removeEventListener('ended', () => setCollectAudioPlaying(false));
         }
     });
+
+    //try to generate special food every 6 seconds
+    useEffect(() => {
+        console.log("Hello")
+        const interval = setInterval(() => {
+            const random = Math.floor(Math.random() * 100);
+            console.log(random)
+            if (random < 10) {
+                setGoldenFoodPos(getRandom());
+                setTimeout(() => {
+                    setGoldenFoodPos([]);
+                }, 4000); //after 4sec it will vanish
+            }
+        }, 6000);
+        return () => clearInterval(interval);
+    }, [goldenFoodPos]);
 
     useEffect(() => {
         const interval = setInterval(async () => {
@@ -95,6 +101,13 @@ const Board = () => {
                     break;
             }
             newSnakePos.unshift(head);
+            
+            if (newSnakePos[0][0] === goldenFoodPos[0] && newSnakePos[0][1] === goldenFoodPos[1]) {
+                setGoldenPoints(goldenPoints + 20);
+                setCollectAudioPlaying(!collectAudioPlaying);
+                //remove golden food from board
+                setGoldenFoodPos([]);
+            }
             if (newSnakePos[0][0] === foodPos[0] && newSnakePos[0][1] === foodPos[1]) {
                 setCollectAudioPlaying(!collectAudioPlaying);
                 setFoodPos(getRandom());
@@ -104,10 +117,10 @@ const Board = () => {
             }
             setSnakePos(newSnakePos);
             if (checkCollision(newSnakePos)) {
-                if ((snakePos.length - 1) * 10 > score) {
-                    setScore((snakePos.length) * 10);
-                    localStorage.setItem("highscore", (snakePos.length) * 10);
-                    // await uploadScore((snakePos.length) * 10);
+                if ((snakePos.length - 1) * 10 + goldenPoints > score) {
+                    setScore((snakePos.length) * 10 + goldenPoints);
+                    localStorage.setItem("highscore", (snakePos.length) * 10+goldenPoints);
+                    uploadScore((snakePos.length) * 10+goldenPoints);
                 }
                 setSpeed(0);
                 music.currentTime = 0;
@@ -121,6 +134,7 @@ const Board = () => {
                 setGameOverMusicPlaying(false);
                 setMusicPlaying(true);
                 setGameOver(true);
+                setGoldenPoints(0);
                 setSpeed(120);
                 setSnakePos([[44, 44]]);
                 setFoodPos(getRandom());
@@ -199,14 +213,15 @@ const Board = () => {
                     {gameOver ? <GameOver setGameOver={setGameOver} setMusicPlaying={setMusicPlaying} /> :
                     <div className="snake-board">
                         <Snake snakePos={snakePos} />
-                        <Food foodPos={foodPos} />
+                            <Food foodPos={foodPos} />
+                            <GoldenFood goldenFoodPos={goldenFoodPos}/>
                     </div>
                 }
             </>}
 
             <div className="scores">
                 <p>Your Highscore: <span className="dig">{score}</span></p>
-                <p>Current Score: <span className="dig">{(snakePos.length - 1) * 10}</span></p>
+                <p>Current Score: <span className="dig">{(snakePos.length - 1) * 10 + goldenPoints}</span></p>
             </div>
         </div>
     )
