@@ -4,6 +4,7 @@ import './AskName.css'
 const AskName = ({setPlayer, setScore, setGameOver}) => {
   const [playerName, setPlayerName] = useState("");
   function savePlayer() {
+    console.log("Player name saved");
     setScore(0);
     setGameOver(false);
     localStorage.removeItem('highscore');

@@ -12,6 +12,11 @@ import gameover_music from '../../assets/game_over.mp3'
 import gameplay_music from '../../assets/gameplay.mp3'
 import Help from '../Help/Help'
 
+const collectAudio = new Audio(collect_soundfx);
+const music = new Audio(background_music);
+const gameOverMusic = new Audio(gameover_music);
+const gameplayMusic = new Audio(gameplay_music);
+
 const Board = () => {
     const [snakePos, setSnakePos] = useState([[44, 44]]);
     const [foodPos, setFoodPos] = useState(getRandom());
@@ -20,24 +25,17 @@ const Board = () => {
     const [score, setScore] = useState(localStorage.getItem('highscore') || 0);
     const [gameOver, setGameOver] = useState(false);
     const [player, setPlayer] = useState(localStorage.getItem('player') || '');
-
-    const [collectAudio] = useState(new Audio(collect_soundfx));
-    const [collectAudioPlaying, setCollectAudioPlaying] = useState(false);
-
-    const [music] = useState(new Audio(background_music));
-    const [musicPlaying, setMusicPlaying] = useState(true);
-
-    const [gameOverMusic] = useState(new Audio(gameover_music));
-    const [gameOverMusicPlaying, setGameOverMusicPlaying] = useState(false);
-
-    const [gameplayMusic] = useState(new Audio(gameplay_music));
-    const [gameplayMusicPlaying, setGameplayMusicPlaying] = useState(true);
-
     const [needHelp, setNeedHelp] = useState(false);
+
+    const [collectAudioPlaying, setCollectAudioPlaying] = useState(false);
+    const [musicPlaying, setMusicPlaying] = useState(true);
+    const [gameOverMusicPlaying, setGameOverMusicPlaying] = useState(false);
+    const [gameplayMusicPlaying, setGameplayMusicPlaying] = useState(true);
+    
 
     useEffect(() => {
         collectAudioPlaying ? collectAudio.play() : collectAudio.pause();
-    }, [collectAudio, collectAudioPlaying]);
+    }, [collectAudioPlaying]);
 
     useEffect(() => {
         musicPlaying && !dir ? music.play() : music.pause();
@@ -52,7 +50,7 @@ const Board = () => {
 
     useEffect(() => {
         gameOverMusicPlaying ? gameOverMusic.play() : gameOverMusic.pause();
-    }, [gameOverMusic, gameOverMusicPlaying]);
+    }, [gameOverMusicPlaying]);
 
     //To run music in loop
     // useEffect(() => {
@@ -109,9 +107,9 @@ const Board = () => {
                 if ((snakePos.length - 1) * 10 > score) {
                     setScore((snakePos.length) * 10);
                     localStorage.setItem("highscore", (snakePos.length) * 10);
-                    uploadScore((snakePos.length) * 10);
+                    // await uploadScore((snakePos.length) * 10);
                 }
-                // setSpeed(0);
+                setSpeed(0);
                 music.currentTime = 0;
                 gameplayMusic.currentTime = 0;
                 setMusicPlaying(false);
@@ -126,6 +124,7 @@ const Board = () => {
                 setSpeed(120);
                 setSnakePos([[44, 44]]);
                 setFoodPos(getRandom());
+                clearInterval(interval);
             };
         }, speed);
         return () => clearInterval(interval);
@@ -187,7 +186,7 @@ const Board = () => {
     return (
         <div className='board'>
             <div className={`sound-icon ${musicPlaying ? 'on' : 'off'} `} onClick={() => setMusicPlaying(!musicPlaying)}></div>
-            <div className={`help-icon ${needHelp? 'need':'not-needed'}`} onClick={() => { setNeedHelp(!needHelp) }}></div>
+            <div className={`help-icon ${needHelp? 'need':'not-needed'}`} onClick={() => setNeedHelp(!needHelp) }></div>
             { needHelp && <Help/>}
 
             {!localStorage.getItem('player') ? <>

@@ -6,6 +6,7 @@ const ScoreBoard = () => {
     const [scores, setScores] = useState([]);
 
     useEffect(() => {
+        console.log("Realtime function called");
         const unsubscribe = api.subscribe([process.env.REACT_APP_APPWRITE_COLLECTIONS], (data) => {
             if (data.event === 'database.documents.create') {
                 
@@ -24,6 +25,7 @@ const ScoreBoard = () => {
     }, [scores])
     
     useEffect(() => {
+        console.log("fetching scores");
         async function fetchScores() {
             const scores = await api.database.listDocuments(process.env.REACT_APP_APPWRITE_COLLECTION_ID, [], 10, 0, '','', ['score'], ['DESC']);
 
