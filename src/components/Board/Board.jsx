@@ -49,8 +49,9 @@ const Board = () => {
     useEffect(() => {
         music.volume = 1;
         collectAudio.volume = 0.6;
-        gameplayMusic.volume = 0.4;
+        gameplayMusic.volume = 0.3;
     },[]);
+
 
     useEffect(() => {
         gameOverMusicPlaying ? gameOverMusic.play() : gameOverMusic.pause();
@@ -103,13 +104,18 @@ const Board = () => {
             newSnakePos.unshift(head);
             
             if (newSnakePos[0][0] === goldenFoodPos[0] && newSnakePos[0][1] === goldenFoodPos[1]) {
-                setGoldenPoints(goldenPoints + 20);
-                setCollectAudioPlaying(!collectAudioPlaying);
+                setCollectAudioPlaying(true);
+                const r = Math.floor(Math.random() * 100);
+                if (r < 50) {
+                    setGoldenPoints(goldenPoints - 50);
+                } else {
+                    setGoldenPoints(goldenPoints + 50);
+                }
                 //remove golden food from board
                 setGoldenFoodPos([]);
             }
             if (newSnakePos[0][0] === foodPos[0] && newSnakePos[0][1] === foodPos[1]) {
-                setCollectAudioPlaying(!collectAudioPlaying);
+                setCollectAudioPlaying(true);
                 setFoodPos(getRandom());
                 increaseSpeed();
             } else {
@@ -123,13 +129,13 @@ const Board = () => {
                     uploadScore((snakePos.length) * 10+goldenPoints);
                 }
                 setSpeed(0);
+                setDir('');
                 music.currentTime = 0;
                 gameplayMusic.currentTime = 0;
                 setMusicPlaying(false);
                 setGameplayMusicPlaying(false);
-                setDir('');
-                //wait for 2 seconds before game over
                 setGameOverMusicPlaying(true);
+                //wait for 2 seconds before game over
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 setGameOverMusicPlaying(false);
                 setMusicPlaying(true);
