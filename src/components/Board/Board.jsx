@@ -12,6 +12,7 @@ import background_music from '../../assets/background-music.mp3'
 import gameover_music from '../../assets/game_over.mp3'
 import gameplay_music from '../../assets/gameplay.mp3'
 import Help from '../Help/Help'
+import { Query } from "appwrite";
 
 const collectAudio = new Audio(collect_soundfx);
 const music = new Audio(background_music);
@@ -29,13 +30,14 @@ const Board = () => {
     const [gameOver, setGameOver] = useState(false);
     const [player, setPlayer] = useState(localStorage.getItem('player') || '');
     const [needHelp, setNeedHelp] = useState(false);
+    const [userId, setUserId] = useState(localStorage.getItem('userId') || '');
 
     //Audio states
     const [collectAudioPlaying, setCollectAudioPlaying] = useState(false);
     const [musicPlaying, setMusicPlaying] = useState(true);
     const [gameOverMusicPlaying, setGameOverMusicPlaying] = useState(false);
     const [gameplayMusicPlaying, setGameplayMusicPlaying] = useState(true);
-    
+
 
     useEffect(() => {
         collectAudioPlaying ? collectAudio.play() : collectAudio.pause();
@@ -43,14 +45,14 @@ const Board = () => {
 
     useEffect(() => {
         musicPlaying && !dir ? music.play() : music.pause();
-        gameplayMusicPlaying && dir? gameplayMusic.play() : gameplayMusic.pause();
+        gameplayMusicPlaying && dir ? gameplayMusic.play() : gameplayMusic.pause();
     });
 
     useEffect(() => {
         music.volume = 1;
         collectAudio.volume = 0.6;
         gameplayMusic.volume = 0.3;
-    },[]);
+    }, []);
 
 
     useEffect(() => {
@@ -66,10 +68,8 @@ const Board = () => {
 
     //try to generate special food every 6 seconds
     useEffect(() => {
-        console.log("Hello")
         const interval = setInterval(() => {
             const random = Math.floor(Math.random() * 100);
-            console.log(random)
             if (random < 10) {
                 setGoldenFoodPos(getRandom());
                 setTimeout(() => {
@@ -102,7 +102,7 @@ const Board = () => {
                     break;
             }
             newSnakePos.unshift(head);
-            
+
             if (newSnakePos[0][0] === goldenFoodPos[0] && newSnakePos[0][1] === goldenFoodPos[1]) {
                 setCollectAudioPlaying(true);
                 const r = Math.floor(Math.random() * 100);
@@ -125,8 +125,8 @@ const Board = () => {
             if (checkCollision(newSnakePos)) {
                 if ((snakePos.length - 1) * 10 + goldenPoints > score) {
                     setScore((snakePos.length) * 10 + goldenPoints);
-                    localStorage.setItem("highscore", (snakePos.length) * 10+goldenPoints);
-                    uploadScore((snakePos.length) * 10+goldenPoints);
+                    localStorage.setItem("highscore", (snakePos.length) * 10 + goldenPoints);
+                    uploadScore((snakePos.length) * 10 + goldenPoints);
                 }
                 setSpeed(0);
                 setDir('');
@@ -197,30 +197,46 @@ const Board = () => {
 
     //Function to upload the score in database
     async function uploadScore(num) {
-        await api.database.createDocument('snake-highscores', 'unique()', {
-            player: player,
-            score: num,
-        })
+        try {
+            let obj = await api.database.listDocuments('snake-highscores', [
+                Query.equal('userId', userId)
+            ]);
+            if (obj.documents.length!==0) {
+                await api.database.updateDocument('snake-highscores', obj.documents[0].$id, {
+                    score: num
+                });
+            } else {
+                await api.database.createDocument('snake-highscores', 'unique()', {
+                    userId: userId,
+                    player: player,
+                    score: num,
+                })
+            }
+            
+        } catch {
+            console.log("Error uploading score");
+        }
     }
 
     return (
         <div className='board'>
             <div className={`sound-icon ${musicPlaying ? 'on' : 'off'} `} onClick={() => setMusicPlaying(!musicPlaying)}></div>
-            <div className={`help-icon ${needHelp? 'need':'not-needed'}`} onClick={() => setNeedHelp(!needHelp) }></div>
-            { needHelp && <Help/>}
+            <div className={`help-icon ${needHelp ? 'need' : 'not-needed'}`} onClick={() => setNeedHelp(!needHelp)}></div>
+            {needHelp && <Help />}
 
             {!localStorage.getItem('player') ? <>
                 <AskName setPlayer={setPlayer} setScore={setScore} setGameOver={setGameOver} />
             </> : <>
                 <div className="name-input">
                     <p>Player name:</p>
-                    <input type="text" onChange={(e) => { setPlayer(e.target.value); localStorage.setItem('player', e.target.value) }} value={player !== '' ? player : ""} />
+                    <p className='dig'>{player}</p>
+                    {/* <input type="text" onChange={(e) => { setPlayer(e.target.value); localStorage.setItem('player', e.target.value) }} value={player !== '' ? player : ""} /> */}
                 </div>
-                    {gameOver ? <GameOver setGameOver={setGameOver} setMusicPlaying={setMusicPlaying} /> :
+                {gameOver ? <GameOver setGameOver={setGameOver} setMusicPlaying={setMusicPlaying} /> :
                     <div className="snake-board">
                         <Snake snakePos={snakePos} />
-                            <Food foodPos={foodPos} />
-                            <GoldenFood goldenFoodPos={goldenFoodPos}/>
+                        <Food foodPos={foodPos} />
+                        <GoldenFood goldenFoodPos={goldenFoodPos} />
                     </div>
                 }
             </>}

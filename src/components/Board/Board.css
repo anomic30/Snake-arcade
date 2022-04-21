@@ -72,29 +72,28 @@
     justify-content: space-around;
     align-items: center;
     gap: 10px;
+    color: #feeb2c;
 }
 
 .name-input p{
     font-family: 'Press Start 2P', cursive;
-    color: #feeb2c;
     font-size: 20px;
 }
 
-.name-input input{
+/* .name-input input{
     font-family: 'Press Start 2P', cursive;
     font-size: 22px;
-    color: #feeb2c;
     max-width: 200px;
     width: auto;
     height: 30px;
     border: none;
     background-color: #292828;
     padding-left: 10px;
-}
+} */
 
-.name-input input:focus{
+/* .name-input input:focus{
     outline: none;
-}
+} */
 
 .scores{
     margin-bottom: 15px;
