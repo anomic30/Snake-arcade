@@ -5,6 +5,13 @@ import './ScoreBoard.css';
 const ScoreBoard = () => {
     const [scores, setScores] = useState([]);
 
+    async function fetchScores() {
+        const scores = await api.database.listDocuments(process.env.REACT_APP_APPWRITE_COLLECTION_ID, [], 10, 0, '','', ['score'], ['DESC']);
+
+        // console.log(scores.documents);
+        setScores(scores.documents);
+    }
+
     useEffect(() => {
         console.log("Realtime function called");
         const unsubscribe = api.subscribe([process.env.REACT_APP_APPWRITE_COLLECTIONS], (data) => {
@@ -17,6 +24,8 @@ const ScoreBoard = () => {
                 newScores.splice(10, newScores.length - 10);
                 setScores(newScores);
 
+            } else if (data.event === 'database.documents.update') {
+                fetchScores();
             }
         })
         return () => {
@@ -26,12 +35,6 @@ const ScoreBoard = () => {
     
     useEffect(() => {
         console.log("fetching scores");
-        async function fetchScores() {
-            const scores = await api.database.listDocuments(process.env.REACT_APP_APPWRITE_COLLECTION_ID, [], 10, 0, '','', ['score'], ['DESC']);
-
-            // console.log(scores.documents);
-            setScores(scores.documents);
-        }
         fetchScores();
     },[])
 

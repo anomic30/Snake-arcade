@@ -30,7 +30,7 @@ const Board = () => {
     const [gameOver, setGameOver] = useState(false);
     const [player, setPlayer] = useState(localStorage.getItem('player') || '');
     const [needHelp, setNeedHelp] = useState(false);
-    const [userId, setUserId] = useState(localStorage.getItem('userId') || '');
+    const [userId] = useState(localStorage.getItem('userId') || '');
 
     //Audio states
     const [collectAudioPlaying, setCollectAudioPlaying] = useState(false);
