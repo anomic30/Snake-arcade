@@ -30,7 +30,7 @@ const Board = () => {
     const [gameOver, setGameOver] = useState(false);
     const [player, setPlayer] = useState(localStorage.getItem('player') || '');
     const [needHelp, setNeedHelp] = useState(false);
-    const [userId] = useState(localStorage.getItem('userId') || '');
+    // const [userId] = useState(localStorage.getItem('userId') || '');
 
     //Audio states
     const [collectAudioPlaying, setCollectAudioPlaying] = useState(false);
@@ -177,6 +177,9 @@ const Board = () => {
 
     //Function to detect keboard press and set the snake direction
     useEffect(() => {
+        if (gameOver || gameOverMusicPlaying) {
+            return;
+        }
         console.log("Key detected")
         const handleKeyPress = (e) => {
             if (e.key === 'ArrowRight' && dir !== 'L') {
@@ -189,17 +192,18 @@ const Board = () => {
                 setDir('D');
             }
         }
+        
         document.addEventListener('keydown', handleKeyPress);
         return () => {
             document.removeEventListener('keydown', handleKeyPress);
         }
-    }, [dir]);
+    }, [dir, gameOver, gameOverMusicPlaying]);
 
     //Function to upload the score in database
     async function uploadScore(num) {
         try {
             let obj = await api.database.listDocuments('snake-highscores', [
-                Query.equal('userId', userId)
+                Query.equal('userId', localStorage.getItem('userId'))
             ]);
             if (obj.documents.length!==0) {
                 await api.database.updateDocument('snake-highscores', obj.documents[0].$id, {
@@ -207,7 +211,7 @@ const Board = () => {
                 });
             } else {
                 await api.database.createDocument('snake-highscores', 'unique()', {
-                    userId: userId,
+                    userId: localStorage.getItem('userId'),
                     player: player,
                     score: num,
                 })
