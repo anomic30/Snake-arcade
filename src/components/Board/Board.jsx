@@ -82,7 +82,7 @@ const Board = () => {
 
     useEffect(() => {
         const interval = setInterval(async () => {
-            setGameplayMusicPlaying(true);
+            setGameplayMusicPlaying(musicPlaying && true);
             const head = [snakePos[0][0], snakePos[0][1]];
             const newSnakePos = [...snakePos];
             switch (dir) {
@@ -132,13 +132,13 @@ const Board = () => {
                 setDir('');
                 music.currentTime = 0;
                 gameplayMusic.currentTime = 0;
-                setMusicPlaying(false);
-                setGameplayMusicPlaying(false);
+                // setMusicPlaying(false);
+                setGameplayMusicPlaying(musicPlaying && false);
                 setGameOverMusicPlaying(true);
                 //wait for 2 seconds before game over
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 setGameOverMusicPlaying(false);
-                setMusicPlaying(true);
+                // setMusicPlaying(true);
                 setGameOver(true);
                 setGoldenPoints(0);
                 setSpeed(120);
