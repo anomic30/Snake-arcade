@@ -1,21 +1,16 @@
-<div align="center">
-    <h1 align="center">🐍 Snake Arcade 🕹️</h1>
-    <br />
-    <b>A retro styled snake game with live high scoreboard!</b>
-    <br />
-    <br />
-</div>
+# Snake Arcade 🕹️
 
-<div align="center">
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Appwrite](https://user-images.githubusercontent.com/63467479/164336754-ffffb848-85ec-4229-a24f-36b1e0c294ca.svg)
 ![DigitalOcean](https://img.shields.io/badge/DigitalOcean-%230167ff.svg?style=for-the-badge&logo=digitalOcean&logoColor=white)
 
-</div>
 
-## Overview
-<img src="https://user-images.githubusercontent.com/63467479/164334247-df5ddc60-c462-411d-9bc5-0f4417c370fc.png" width="100%">
+<img src="https://user-images.githubusercontent.com/63467479/165599959-80f277b5-77c7-46b8-8e64-366011d6aa34.png" width="100%">
+
+Snake arcade is a retro themed spinoff of the popular Nokia snake game. Play now and compete with your friends to top the high scoreboard!
+
+Link: https://snake-arcade-bck7y.ondigitalocean.app/
 
 ### `npm start`
 
@@ -32,3 +27,10 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+
+## Additional Info:
+Snake Arcade uses Appwrite to store the score of every player in its database. The Appwrite instance is hosted at DigitalOcean.
+
+<img src="https://user-images.githubusercontent.com/63467479/165616044-72aeee4f-a2f3-427a-aa2c-707c45e71d15.png" width="100%">
+
+This project is built during the [Appwrite Hackathon on Dev](https://dev.to/devteam/announcing-the-appwrite-hackathon-on-dev-1oc0)
