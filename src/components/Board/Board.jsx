@@ -208,13 +208,13 @@ const Board = () => {
             if (obj.documents.length!==0) {
                 await api.database.updateDocument('snake-highscores', obj.documents[0].$id, {
                     score: num
-                });
+                },['role:all'], [`user:${localStorage.getItem('userId')}`]);
             } else {
                 await api.database.createDocument('snake-highscores', 'unique()', {
                     userId: localStorage.getItem('userId'),
                     player: player,
                     score: num,
-                })
+                }, ['role:all'], [`user:${localStorage.getItem('userId')}`]);
             }
             
         } catch {
